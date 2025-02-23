@@ -16,7 +16,9 @@ func (self Diner) diner_loop() {
 	time.After(time.Duration(rand.IntN(5)) * time.Second)
 
 	for {
-		select {
+		// `select` will block until either `case` is available to be fulfilled.
+		// So, if left or right become free, it'll grab it.
+		select { 
 		case <-*self.left:
 			fmt.Printf("Diner %d: acquired left chopstick\n", self.number)
 
@@ -28,7 +30,7 @@ func (self Diner) diner_loop() {
 				fmt.Printf("Diner %d: releasing....\n", self.number)
 				*self.right <- true
 				*self.left <- true
-			case <-time.After(3 * time.Second):
+			case <-time.After(3 * time.Second):	// timeout if we cant get both
 				fmt.Printf("Diner %d, failed to acquire right chopstick, releasing left\n", self.number)
 				*self.left <- true
 			}
@@ -43,7 +45,7 @@ func (self Diner) diner_loop() {
 				fmt.Printf("Diner %d: releasing....\n", self.number)
 				*self.left <- true
 				*self.right <- true
-			case <-time.After(3 * time.Second):
+			case <-time.After(3 * time.Second): // timeout if we cant get both
 				fmt.Printf("Diner %d: failed to acquire left chopstick, releasing right\n", self.number)
 				*self.right <- true
 			}
@@ -52,6 +54,11 @@ func (self Diner) diner_loop() {
 }
 
 func main() {
+
+	// Each mutex is just a buffered pipe - if there's a value waiting in the
+	// pipe, that means our mutex is unlocked. If it's empty, that means our
+	// mutex is locked. This causes the `select` statement in our diner loop to
+	// block until its available
 	c1 := make(chan bool, 1)
 	c1 <- true	// unlocked
 	c2 := make(chan bool, 1)
@@ -69,6 +76,7 @@ func main() {
 	d4 := Diner{ number: 4, left: &c3, right: &c4 }
 	d5 := Diner{ number: 5, left: &c4, right: &c5 }
 	
+	// Each `go` routine launches its own thread
 	go d1.diner_loop()
 	go d2.diner_loop()
 	go d3.diner_loop()
