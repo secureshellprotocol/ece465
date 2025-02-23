@@ -1,7 +1,31 @@
 # Ind Study ECE 465 - HW 2
 ## Due February 24, 2025 11:59 PM
 
-Instructions
+# How to run and build
+
+First, make sure the Go toolchain is installed on your system.
+
+Refer to the [Go installation docs](https://go.dev/doc/install) for instructions 
+on how to build for your system.
+
+For Fedora Linux:
+```
+$ sudo dnf install golang
+```
+
+For Ubuntu Linux:
+```
+$ sudo apt install golang
+```
+
+To run:
+
+```
+$ go build
+$ ./hw2
+```
+
+# Instructions
 
 You are to provide a solution to the Dining Philosophers problem. It's a classic illustration of concurrency and some of its fundamental challenges like deadlock and starvation.
 
