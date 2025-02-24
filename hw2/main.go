@@ -10,9 +10,11 @@ type Diner struct {
 	number 	int
 	left	*chan bool
 	right	*chan bool
+	
+	done	bool
 }
 
-func (self Diner) diner_loop() {
+func (self *Diner) diner_loop() {
 	time.After(time.Duration(rand.IntN(5)) * time.Second)
 
 	for {
@@ -30,6 +32,7 @@ func (self Diner) diner_loop() {
 				fmt.Printf("Diner %d: releasing....\n", self.number)
 				*self.right <- true
 				*self.left <- true
+				self.done = true
 			case <-time.After(3 * time.Second):	// timeout if we cant get both
 				fmt.Printf("Diner %d, failed to acquire right chopstick, releasing left\n", self.number)
 				*self.left <- true
@@ -45,6 +48,7 @@ func (self Diner) diner_loop() {
 				fmt.Printf("Diner %d: releasing....\n", self.number)
 				*self.left <- true
 				*self.right <- true
+				self.done = true
 			case <-time.After(3 * time.Second): // timeout if we cant get both
 				fmt.Printf("Diner %d: failed to acquire left chopstick, releasing right\n", self.number)
 				*self.right <- true
@@ -70,12 +74,12 @@ func main() {
 	c5 := make(chan bool, 1)
 	c5 <- true
 
-	d1 := Diner{ number: 1, left: &c5, right: &c1 }
-	d2 := Diner{ number: 2, left: &c1, right: &c2 }
-	d3 := Diner{ number: 3, left: &c2, right: &c3 }
-	d4 := Diner{ number: 4, left: &c3, right: &c4 }
-	d5 := Diner{ number: 5, left: &c4, right: &c5 }
-	
+	d1 := Diner{ number: 1, left: &c5, right: &c1, done: false }
+	d2 := Diner{ number: 2, left: &c1, right: &c2, done: false }
+	d3 := Diner{ number: 3, left: &c2, right: &c3, done: false }
+	d4 := Diner{ number: 4, left: &c3, right: &c4, done: false }
+	d5 := Diner{ number: 5, left: &c4, right: &c5, done: false }
+
 	// Each `go` routine launches its own thread
 	go d1.diner_loop()
 	go d2.diner_loop()
@@ -83,5 +87,10 @@ func main() {
 	go d4.diner_loop()
 	go d5.diner_loop()
 
-	for{}
+	for {
+		if d1.done && d2.done && d3.done && d4.done && d5.done {
+			fmt.Printf("all done!\n")
+			return
+		}
+	}
 }
