@@ -1,0 +1,10 @@
+---
+# vagrant uses its own hosts file
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: "setup podman"
+      ansible.builtin.package: 
+        name: "podman"
+
