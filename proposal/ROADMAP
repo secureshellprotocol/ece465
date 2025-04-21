@@ -1,4 +1,0 @@
-End of March:
--   Have deployment of 3 VM's all running together, running the same software.
-    Each VM should have some way to talk to each other. Have an election to 
-    set one as the domain manager.

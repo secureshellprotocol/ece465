@@ -25,8 +25,6 @@ and scalability of distributed resources, attempting to make this system work
 independent of the actual software on each container, and properly mask the 
 migrations occuring on the overall container network
 
-This topic will evolve over time.
-
 Currently:
 March 3rd: develop a roadmap on where to go, reading papers on migration & 
 checkpoint/restore. This includes a brush up on some lower level operating 
