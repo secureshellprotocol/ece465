@@ -1,18 +1,18 @@
-package core
+package engine
 
 import (
 	"context"
 )
 
-type GrpcServer struct {
+type NodeGrpcServer struct {
 	command_channel chan string
 }
 
-func ( n GrpcServer ) ReportStatus(ctx context.Context, rqst *Request) (*Response, error) {
+func ( n NodeGrpcServer ) ReportStatus(ctx context.Context, rqst *Request) (*Response, error) {
 	return &Response{Data: "ok"}, nil
 }
 
-func ( n GrpcServer ) AssignTask(rqst *Request, server *NodeService_AssignTaskServer) error {
+func ( n NodeGrpcServer ) AssignTask(rqst *Request, server *NodeService_AssignTaskServer) error {
 	for {
 		select {
 		case cmd := <-n.command_channel:
@@ -24,11 +24,11 @@ func ( n GrpcServer ) AssignTask(rqst *Request, server *NodeService_AssignTaskSe
 	}
 }
 
-var server *GrpcServer
+var server *NodeGrpcServer
 
-func GetGrpcServer() *GrpcServer {
+func GetNodeGrpcServer() *NodeGrpcServer {
 	if server == nil {
-		server = &GrpcServer {
+		server = &NodeGrpcServer {
 			command_channel: make(chan string),
 		}
 	}

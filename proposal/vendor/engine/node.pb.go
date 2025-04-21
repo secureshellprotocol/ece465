@@ -4,7 +4,7 @@
 // 	protoc        v3.19.6
 // source: node.proto
 
-package core
+package engine
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -114,15 +114,16 @@ var File_node_proto protoreflect.FileDescriptor
 const file_node_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"node.proto\x12\x04core\"!\n" +
+	"node.proto\x12\x06engine\"!\n" +
 	"\aRequest\x12\x16\n" +
 	"\x06action\x18\x01 \x01(\tR\x06action\"\x1e\n" +
 	"\bResponse\x12\x12\n" +
-	"\x04data\x18\x01 \x01(\tR\x04data2o\n" +
-	"\vNodeService\x12/\n" +
-	"\fReportStatus\x12\r.core.Request\x1a\x0e.core.Response\"\x00\x12/\n" +
+	"\x04data\x18\x01 \x01(\tR\x04data2w\n" +
+	"\vNodeService\x123\n" +
+	"\fReportStatus\x12\x0f.engine.Request\x1a\x10.engine.Response\"\x00\x123\n" +
 	"\n" +
-	"AssignTask\x12\r.core.Request\x1a\x0e.core.Response\"\x000\x01B\bZ\x06.;coreb\x06proto3"
+	"AssignTask\x12\x0f.engine.Request\x1a\x10.engine.Response\"\x000\x01B\n" +
+	"Z\b.;engineb\x06proto3"
 
 var (
 	file_node_proto_rawDescOnce sync.Once
@@ -138,14 +139,14 @@ func file_node_proto_rawDescGZIP() []byte {
 
 var file_node_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_node_proto_goTypes = []any{
-	(*Request)(nil),  // 0: core.Request
-	(*Response)(nil), // 1: core.Response
+	(*Request)(nil),  // 0: engine.Request
+	(*Response)(nil), // 1: engine.Response
 }
 var file_node_proto_depIdxs = []int32{
-	0, // 0: core.NodeService.ReportStatus:input_type -> core.Request
-	0, // 1: core.NodeService.AssignTask:input_type -> core.Request
-	1, // 2: core.NodeService.ReportStatus:output_type -> core.Response
-	1, // 3: core.NodeService.AssignTask:output_type -> core.Response
+	0, // 0: engine.NodeService.ReportStatus:input_type -> engine.Request
+	0, // 1: engine.NodeService.AssignTask:input_type -> engine.Request
+	1, // 2: engine.NodeService.ReportStatus:output_type -> engine.Response
+	1, // 3: engine.NodeService.AssignTask:output_type -> engine.Response
 	2, // [2:4] is the sub-list for method output_type
 	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

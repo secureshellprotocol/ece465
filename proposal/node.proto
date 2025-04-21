@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-package core;
-option go_package = ".;core";
+package engine;
+option go_package = ".;engine";
 
 message Request {
   string action = 1;
