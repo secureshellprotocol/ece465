@@ -13,4 +13,3 @@ RUN python3 -m pip install -r ./requirements.txt
 # final configuration
 ENV FLASK_APP=main
 EXPOSE 8000
-CMD ["flask", "run", "--host", "0.0.0.0", "--port", "8000"]

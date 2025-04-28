@@ -33,14 +33,17 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
-    apt install -y git ansible
+    apt install -y ansible
   SHELL
 
-  # Use :ansible or :ansible_local to
-  # select the provisioner of your choice
-  config.vm.provision :ansible do |ansible|
-    ansible.playbook = "setup-docker.yml"
-  end
+#  # Use :ansible or :ansible_local to
+#  # select the provisioner of your choice
+#  config.vm.provision :ansible do |ansible|
+#    ansible.playbook = "setup-docker.yml"
+#  end
 
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "provisioning/main.yml"
+  end
 
 end

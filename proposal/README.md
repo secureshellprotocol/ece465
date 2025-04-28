@@ -30,8 +30,13 @@ March 3rd: develop a roadmap on where to go, reading papers on migration &
 checkpoint/restore. This includes a brush up on some lower level operating 
 systems concepts, as well as a deeper dive into the Linux scheduler.
 
-E.g [https://ir.lib.uwo.ca/etd/10358/](https://ir.lib.uwo.ca/etd/10358/), [https://ieeexplore.ieee.org/abstract/document/7980161](https://ieeexplore.ieee.org/abstract/document/7980161)
+## References:
 
-I took a lot of inspiration first by getting direction from the broad list of 
-research topics presented on [George Washington University's Distributed Systems website.](https://gwdistsys20.github.io/project/#milestone-1-select-a-topic),
- and then reading the various papers linked on that site. 
+[Jeff Geerling, "Ansible for DevOps"](https://www.ansiblefordevops.com/)
+
+[S. Nadgowda, S. Suneja, N. Bila and C. Isci, "Voyager: Complete Container State
+Migration,"](https://ieeexplore.ieee.org/abstract/document/7980161)
+
+[George Washington University's Distributed Systems website.](https://gwdistsys20.github.io/project/#milestone-1-select-a-topic)
+
+
