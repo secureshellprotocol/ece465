@@ -4,22 +4,33 @@
 BOX_IMAGE = "bento/debian-12.9"
 WORKER_COUNT = 3
 Vagrant.configure("2") do |config|
+  config.ssh.insert_key = false
+  config.vm.synced_folder ".", "/vagrant", disabled: false
+
   config.vm.provider "virtualbox" do |vb|
     vb.gui = false
     vb.memory = "2048"
   end
     
-  # box definitions
-  (1..WORKER_COUNT).each do |i|
-    config.vm.define "worker#{i}" do |subconfig|
-      #subconfig.dns.tld = "test"
-      subconfig.vm.hostname = "vagrant#{i}"
-      #subconfig.dns.patterns = "worker#{i}.mysite.test"
-      subconfig.vm.box = BOX_IMAGE
-      subconfig.vm.network "private_network", ip: "192.168.56.#{i+10}"
-    end
+  # define 3 workers for running container jobs
+  #   We cant do arbitrary amounts of workers, since the ansible hosts.ini
+  #   directly relies on 3 workers with predictable ips
+  config.vm.define "worker1" do |subconfig|
+    subconfig.vm.hostname = "worker1.test"
+    subconfig.vm.box = BOX_IMAGE
+    subconfig.vm.network "private_network", ip: "192.168.56.11"
   end
- 
+#  config.vm.define "worker2" do |subconfig|
+#    subconfig.vm.hostname = "worker2.test"
+#    subconfig.vm.box = BOX_IMAGE
+#    subconfig.vm.network "private_network", ip: "192.168.56.12"
+#  end
+#  config.vm.define "worker3" do |subconfig|
+#    subconfig.vm.hostname = "worker3.test"
+#    subconfig.vm.box = BOX_IMAGE
+#    subconfig.vm.network "private_network", ip: "192.168.56.13"
+#  end
+
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
     apt install -y git ansible
@@ -28,7 +39,7 @@ Vagrant.configure("2") do |config|
   # Use :ansible or :ansible_local to
   # select the provisioner of your choice
   config.vm.provision :ansible do |ansible|
-    ansible.playbook = "setup-playbook.yml"
+    ansible.playbook = "setup-docker.yml"
   end
 
 
