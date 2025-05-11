@@ -1,4 +1,13 @@
 ---
+- name: Enable docker experimental mode
+  ansible.builtin.shell: "{\"experimental\": true}" >> /etc/docker/daemon.json
+
+- name: Restart docker daemon
+  ansible.builtin.systemd_service:
+    state: restarted
+    daemon_reload: true
+    name: docker
+
 - name: Build demo-app Docker Image
   docker_image: 
     name: "{{ item.name }}"
@@ -14,6 +23,7 @@
 - name: Run demo-app container
   docker_container:
     image: demo-app:latest
-    name: demo
-    state: present
-    command: 
+    name: demo-app
+    state: started
+    command: python /opt/www/index.py
+    ports: "{ http_port }:8000"

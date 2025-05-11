@@ -4,6 +4,11 @@
 
   vars: 
     build_root: /vagrant/provisioning
+    http_port: "8000"
+
+  pre-tasks:
+    - name: Update apt cache if needed
+      apt: update_cache=yes cache_valid_time=3600
 
   roles:
     - role: geerlingguy.docker
