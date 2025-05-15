@@ -30,6 +30,30 @@ March 3rd: develop a roadmap on where to go, reading papers on migration &
 checkpoint/restore. This includes a brush up on some lower level operating 
 systems concepts, as well as a deeper dive into the Linux scheduler.
 
+## Prerequisites to run
+
+This work has only been tested on Ubuntu Server 24.04 LTS, either on bare-metal
+or on a virtual machine.
+
+Non-optional utilities:
+```
+# apt install git
+```
+
+## Running the demo
+
+`vagrant provision`
+
+`vagrant up`
+
+## Troubleshooting
+
+```
+ERROR! the role 'geerlingguy.docker' was not found in <directory list>
+```
+
+Ensure that you have run the `configure.sh` script in the repo root directory
+
 ## References:
 
 [Jeff Geerling, "Ansible for DevOps"](https://www.ansiblefordevops.com/)
