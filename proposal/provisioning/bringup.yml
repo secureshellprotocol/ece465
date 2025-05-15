@@ -1,0 +1,20 @@
+---
+- name: Build demo-app Docker Image
+  docker_image: 
+    name: "{{ item.name }}"
+    tag: "{{ item.tag }}"
+    source: build
+    build:
+      path: "{{ build_root }}/{{ item.dir }}"
+      pull: false
+    state: present
+  with_items:
+    - { name: demo-app, tag: latest, dir: demo-app }
+
+- name: Run demo-app container
+  docker_container:
+    image: demo-app:latest
+    name: demo-app
+    state: started
+    command: python3 /opt/demo-app/index.py
+    ports: "{{ http_port }}:8000"

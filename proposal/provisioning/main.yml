@@ -17,3 +17,7 @@
   tasks:
     - import_tasks: setup.yml
     - import_tasks: docker.yml
+
+    - name: Bring up stateful container
+      import_tasks: bringup.yml
+      when: ansible_env.STARTING 
