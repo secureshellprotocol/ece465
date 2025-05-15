@@ -35,16 +35,31 @@ systems concepts, as well as a deeper dive into the Linux scheduler.
 This work has only been tested on Ubuntu Server 24.04 LTS, either on bare-metal
 or on a virtual machine.
 
-Non-optional utilities:
+Vagrant must be installed, you can find the instructions
+[here.](https://developer.hashicorp.com/vagrant/install)
+
+## Steps to run
+
+Pull down the repo and save it in a safe place
 ```
 # apt install git
+$ cd ~
+$ git clone https://github.com/secureshellprotocol/ece465.git
+$ cd ece465/provisioning        # this is our PWD
 ```
 
 ## Running the demo
 
-`vagrant provision`
+`vagrant up --provision`
 
-`vagrant up`
+## Reseting the Vagrant Environment
+
+To destroy our worker VM's, and re-provision them to the intended state:
+```
+$ vagrant destroy
+$ vagrant up --provision
+```
+
 
 ## Troubleshooting
 

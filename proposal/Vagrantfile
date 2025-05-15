@@ -1,8 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-BOX_IMAGE = "bento/debian-12.9"
-WORKER_COUNT = 3
+BOX_IMAGE = "bento/ubuntu-24.04"
 Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
   config.vm.synced_folder ".", "/vagrant", disabled: false
@@ -19,31 +18,34 @@ Vagrant.configure("2") do |config|
     subconfig.vm.hostname = "worker1.test"
     subconfig.vm.box = BOX_IMAGE
     subconfig.vm.network "private_network", ip: "192.168.56.11"
+    
+    # worker 1 starts with the stateful container
+    subconfig.vm.provision "ansible" do |ansible|
+      ansible.playbook = "provisioning/main.yml"
+    end
   end
-#  config.vm.define "worker2" do |subconfig|
-#    subconfig.vm.hostname = "worker2.test"
-#    subconfig.vm.box = BOX_IMAGE
-#    subconfig.vm.network "private_network", ip: "192.168.56.12"
-#  end
-#  config.vm.define "worker3" do |subconfig|
-#    subconfig.vm.hostname = "worker3.test"
-#    subconfig.vm.box = BOX_IMAGE
-#    subconfig.vm.network "private_network", ip: "192.168.56.13"
-#  end
-
+  config.vm.define "worker2" do |subconfig|
+    subconfig.vm.hostname = "worker2.test"
+    subconfig.vm.box = BOX_IMAGE
+    subconfig.vm.network "private_network", ip: "192.168.56.12"
+  end
+  
+  config.vm.define "worker3" do |subconfig|
+    subconfig.vm.hostname = "worker3.test"
+    subconfig.vm.box = BOX_IMAGE
+    subconfig.vm.network "private_network", ip: "192.168.56.13"
+  end
+  
+  config.vm.define "endpoint" do |subconfig|
+    subconfig.vm.hostname = "endpoint.test"
+    subconfig.vm.box = BOX_IMAGE
+    subconfig.vm.network "private_network", ip: "192.168.56.100"
+  end
+  
+  # uniform config for all VMS
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
     apt install -y ansible
   SHELL
-
-#  # Use :ansible or :ansible_local to
-#  # select the provisioner of your choice
-#  config.vm.provision :ansible do |ansible|
-#    ansible.playbook = "setup-docker.yml"
-#  end
-
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "provisioning/main.yml"
-  end
 
 end

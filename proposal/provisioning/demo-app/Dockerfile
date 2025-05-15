@@ -4,10 +4,13 @@ FROM ubuntu:22.04
 # IMPORTANT !!!!!!!!!!!!!
 # This Dockerfile should be in the same directory as 'main.py'
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 # install app dependencies
 RUN apt-get update
-RUN apt-get install -y python3 python3-pip
+RUN apt-get install -y python3 python3-pip ansible
 
+COPY requirements.txt ./requirements.txt
 RUN python3 -m pip install -r ./requirements.txt
 
 COPY playbook.yml /etc/ansible/playbook.yml
