@@ -1,6 +1,8 @@
 # Cloud Computing Final Proposal
 James Ryan, advised by Prof. Rob Marano
 
+A demo video can be found [here](https://youtu.be/-2rc3Oy66FU).
+
 ## Course Goals
 
 Our course goals involve creating an MVP which follows our four design goals:
@@ -10,25 +12,20 @@ Our course goals involve creating an MVP which follows our four design goals:
 3. Build each component to be easily interchangable
 4. Have the ability to scale based on usage
 
-## Proposal
+My solution provides a working demo of a container being migrated between two
+worker virtual machines. These workers could be anything, eg: some kind of
+machine in a datacenter designed to run time-shared customer containers. With a
+little expansion. These are "workers".
 
-As a rough cut, 
-I'd like to investigate current approaches to container migration techniques 
-across distributed systems, and research what heuristics matter when migrating
-resources between nodes. I plan to utilize [QEMU](https://www.qemu.org/), [CRIU](https://criu.org/Main_Page),
-as well as some original code in (probably) Python, I'll reimplement techniques
- reviewed in past & current publications, looking to make optimizations where I
- can.
+Briefly, each worker has access to a shared network pool, where each can write
+to and communicate with eachother. The final design uses this shared pool to
+migrate containers + their state to other machines, allowing for seamless
+downtime if a worker needs to undergo maintenance. All of this has been designed
+modularly using Infrastructure-as-Code, where each worker is defined
+idempotently using Ansible scripts. We simulate a networked environment using
+Vagrant.
 
-Primarily, these methods will center around the course goals of transparency 
-and scalability of distributed resources, attempting to make this system work 
-independent of the actual software on each container, and properly mask the 
-migrations occuring on the overall container network
-
-Currently:
-March 3rd: develop a roadmap on where to go, reading papers on migration & 
-checkpoint/restore. This includes a brush up on some lower level operating 
-systems concepts, as well as a deeper dive into the Linux scheduler.
+![architecture](./arch.png)
 
 ## Technical challenges while working on the project
 
@@ -42,28 +39,44 @@ checkpointing at all, so I would have had to compile it myself.
 
 ## Prerequisites to run
 
-This work has only been tested on Ubuntu Server 24.04 LTS, either on bare-metal
-or on a virtual machine.
+This demo has only been tested on Ubuntu 24.04 LTS and Fedora 40 Workstation.
+
+The Worker containers must run Fedora Linux.
 
 Vagrant must be installed, you can find the instructions
 [here.](https://developer.hashicorp.com/vagrant/install)
+
+You likely need `git, `
 
 ## Steps to run
 
 Pull down the repo and save it in a safe place
 ```
-# apt install git
 $ cd ~
 $ git clone https://github.com/secureshellprotocol/ece465.git
 $ cd ece465/provisioning        # this is our PWD
 $ ./configure.sh
+$ vagrant up --provision
 ```
 
-## Running the demo
+Each machine should be available over ssh, eg: `vagrant ssh worker1`
 
-```
-vagrant up --provision
-```
+## Future work
+
+Some future work would being able to remotely tell a machine to launch an image
+after another machine informs it that it had pulled down an image. Currently, as
+seen in the demo video, it must be done with human interaction.
+
+One possible solution would be a daemon which watches for directory updates: eg,
+each machine has its own semaphore associated with itself, and its own directory
+where it can find container image tars + container state tars from other
+machines. To migrate from a source to a destination machine, the source machine
+would run `./checkpoint.sh` and save to a well-defined spot which both machines
+agree on being the tar destination. Then, the source machine sets a semaphore
+which the destination machine watches. When the destination sees that semaphore
+get updated, it checks that well-defined directory, and pulls the image + ram
+state, using the `./restore.sh` script. I do not have enough time left in the
+semester to implement this.
 
 ## Scripts 
 
