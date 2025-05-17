@@ -30,6 +30,16 @@ March 3rd: develop a roadmap on where to go, reading papers on migration &
 checkpoint/restore. This includes a brush up on some lower level operating 
 systems concepts, as well as a deeper dive into the Linux scheduler.
 
+## Technical challenges while working on the project
+
+Docker completely does not support saving checkpoint states to files/folders.
+See [this Moby issue](https://github.com/moby/moby/issues/37344)
+
+There appears to be a lack of support for checkpointing among some
+distributions. I initially selected Ubuntu 24.04 LTS as my base OS, but for each
+of the vagrant containers themselves, the `crun` binary had no support for
+checkpointing at all, so I would have had to compile it myself.
+
 ## Prerequisites to run
 
 This work has only been tested on Ubuntu Server 24.04 LTS, either on bare-metal

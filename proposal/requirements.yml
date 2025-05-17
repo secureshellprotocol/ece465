@@ -3,6 +3,8 @@
 roles:
   - name: geerlingguy.docker
     version: "7.4.7"
+  - name: python
+    src: https://github.com/cisagov/ansible-role-python
 collections:
   - name: containers.podman
     version: "1.16.3"

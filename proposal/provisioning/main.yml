@@ -6,9 +6,8 @@
     build_root: /vagrant/provisioning
     venv_path: /vagrant/venv
   
-  pre_tasks:
-    - name: Update apt cache if needed
-      apt: update_cache=yes cache_valid_time=3600
+  roles:    
+    - role: python
 
   tasks:
     - import_tasks: setup.yml

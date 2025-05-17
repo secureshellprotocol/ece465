@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-BOX_IMAGE = "bento/ubuntu-24.04"
+BOX_IMAGE = "bento/fedora-41"
 Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
   config.vm.synced_folder ".", "/vagrant", disabled: false
@@ -13,8 +13,8 @@ Vagrant.configure("2") do |config|
   
   # uniform config for all VMS
   config.vm.provision "shell", inline: <<-SHELL
-    apt-get update
-    apt install -y ansible
+    sudo dnf update
+    sudo dnf install -y ansible python3-libdnf5 
   SHELL
    
   # define 3 workers for running container jobs
@@ -40,25 +40,25 @@ Vagrant.configure("2") do |config|
     end
   end
   
-  config.vm.define "worker3" do |subconfig|
-    subconfig.vm.hostname = "worker3.test"
-    subconfig.vm.box = BOX_IMAGE
-    subconfig.vm.network "private_network", ip: "192.168.56.13"
-    
-    subconfig.vm.provision "ansible" do |ansible|
-      ansible.playbook = "provisioning/main.yml"
-    end
-  end
+#  config.vm.define "worker3" do |subconfig|
+#    subconfig.vm.hostname = "worker3.test"
+#    subconfig.vm.box = BOX_IMAGE
+#    subconfig.vm.network "private_network", ip: "192.168.56.13"
+#    
+#    subconfig.vm.provision "ansible" do |ansible|
+#      ansible.playbook = "provisioning/main.yml"
+#    end
+#  end
   
-  config.vm.define "endpoint" do |subconfig|
-    subconfig.vm.hostname = "endpoint.test"
-    subconfig.vm.box = BOX_IMAGE
-    subconfig.vm.network "private_network", ip: "192.168.56.100"
-    
-    subconfig.vm.provision "ansible" do |ansible|
-      ansible.playbook = "provisioning/main.yml"
-      # Caddy Endpoint bringup
-      ansible.playbook = "endpoint/main.yml"
-    end
-  end
+#  config.vm.define "endpoint" do |subconfig|
+#    subconfig.vm.hostname = "endpoint.test"
+#    subconfig.vm.box = BOX_IMAGE
+#    subconfig.vm.network "private_network", ip: "192.168.56.100"
+#    
+#    subconfig.vm.provision "ansible" do |ansible|
+#      ansible.playbook = "provisioning/main.yml"
+#      # Caddy Endpoint bringup
+#      ansible.playbook = "endpoint/main.yml"
+#    end
+#  end
 end

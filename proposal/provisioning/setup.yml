@@ -1,30 +1,25 @@
 ---
 - name: Install python
-  apt:
+  dnf:
     name: python3
     state: present
 
 - name: Install pip
-  apt:
+  dnf:
     name: python3-pip
     state: present
 
 - name: Install docker python library
-  apt:
+  dnf:
     name: python3-docker
     state: present
 
 - name: Install Podman
-  apt:
+  dnf:
     name: podman
     state: present
 
-- name: Set up CRIU PPA
-  apt_repository:
-    repo: 'ppa:criu/ppa'
-    state: present
-
 - name: Install CRIU package
-  apt:
+  dnf:
     name: criu
     state: present

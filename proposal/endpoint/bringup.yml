@@ -1,18 +1,39 @@
 ---
+#- name: Build Caddy Docker Image
+#  containers.podman.podman_image: 
+#    name: "{{ item.name }}"
+#    tag: "{{ item.tag }}"
+#    build:
+#      file: "{{ build_root }}/{{ item.dir }}/Dockerfile"
+#      format: "docker"
+#    state: build
+#    force: true
+#  with_items:
+#    - { name: caddy_j, tag: latest, dir: caddy }
+#
+#- name: Run caddy container
+#  containers.podman.podman_container:
+#    image: caddy_j:latest
+#    name: caddyrv
+#    state: started
+#    command: caddy run --config /etc/caddy/Caddyfile
+#    ports: "80:80"
 - name: Build Caddy Docker Image
-  containers.podman.podman_image: 
+  docker_image: 
     name: "{{ item.name }}"
     tag: "{{ item.tag }}"
+    source: build
     build:
-      file: "{{ build_root }}/{{ item.dir }}/Dockerfile"
-      format: "docker"
-    state: build
-    force: true
+      path: "{{ build_root }}/{{ item.dir }}"
+      pull: false
+      nocache: true
+    state: present
+    force_source: true
   with_items:
     - { name: caddy_j, tag: latest, dir: caddy }
 
 - name: Run caddy container
-  containers.podman.podman_container:
+  docker_container:
     image: caddy_j:latest
     name: caddyrv
     state: started
