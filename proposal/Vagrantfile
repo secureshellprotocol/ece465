@@ -10,7 +10,13 @@ Vagrant.configure("2") do |config|
     vb.gui = false
     vb.memory = "2048"
   end
-    
+  
+  # uniform config for all VMS
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
+    apt install -y ansible
+  SHELL
+   
   # define 3 workers for running container jobs
   #   We cant do arbitrary amounts of workers, since the ansible hosts.ini
   #   directly relies on 3 workers with predictable ips
@@ -19,33 +25,40 @@ Vagrant.configure("2") do |config|
     subconfig.vm.box = BOX_IMAGE
     subconfig.vm.network "private_network", ip: "192.168.56.11"
     
-    # worker 1 starts with the stateful container
     subconfig.vm.provision "ansible" do |ansible|
       ansible.playbook = "provisioning/main.yml"
     end
   end
+  
   config.vm.define "worker2" do |subconfig|
     subconfig.vm.hostname = "worker2.test"
     subconfig.vm.box = BOX_IMAGE
     subconfig.vm.network "private_network", ip: "192.168.56.12"
+    
+    subconfig.vm.provision "ansible" do |ansible|
+      ansible.playbook = "provisioning/main.yml"
+    end
   end
   
   config.vm.define "worker3" do |subconfig|
     subconfig.vm.hostname = "worker3.test"
     subconfig.vm.box = BOX_IMAGE
     subconfig.vm.network "private_network", ip: "192.168.56.13"
+    
+    subconfig.vm.provision "ansible" do |ansible|
+      ansible.playbook = "provisioning/main.yml"
+    end
   end
   
   config.vm.define "endpoint" do |subconfig|
     subconfig.vm.hostname = "endpoint.test"
     subconfig.vm.box = BOX_IMAGE
     subconfig.vm.network "private_network", ip: "192.168.56.100"
+    
+    subconfig.vm.provision "ansible" do |ansible|
+      ansible.playbook = "provisioning/main.yml"
+      # Caddy Endpoint bringup
+      ansible.playbook = "endpoint/main.yml"
+    end
   end
-  
-  # uniform config for all VMS
-  config.vm.provision "shell", inline: <<-SHELL
-    apt-get update
-    apt install -y ansible
-  SHELL
-
 end

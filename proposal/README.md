@@ -50,9 +50,13 @@ $ cd ece465/provisioning        # this is our PWD
 
 ## Running the demo
 
-`vagrant up --provision`
+```
+vagrant up --provision
+```
 
-## Reseting the Vagrant Environment
+## Scripts 
+
+### Reseting the Vagrant Environment
 
 To destroy our worker VM's, and re-provision them to the intended state:
 ```
@@ -60,14 +64,37 @@ $ vagrant destroy
 $ vagrant up --provision
 ```
 
+### Reseting the endpoint
+
+To restart just the endpoint (eg, for a `Caddyfile` reload), just run
+```
+./reset_endpoint.sh
+```
 
 ## Troubleshooting
+
+### Failed to find role 'geerlingguy.docker'
 
 ```
 ERROR! the role 'geerlingguy.docker' was not found in <directory list>
 ```
 
 Ensure that you have run the `configure.sh` script in the repo root directory
+
+### The IP Ranges configured for the host-only network is not within the allowed ranges
+
+This means VirtualBox set a different address range than what was expected for
+our demo.
+
+A lot of IP's are statically referenced (blegh), so you'll need to go to
+`/etc/vbox/networks.conf` on your host machine and adjust to match
+```
+    * 192.168.56.0/21
+```
+
+See [Oracle VirtualBox
+Documentation](https://www.virtualbox.org/manual/ch06.html#network_hostonly) on
+the issue.
 
 ## References:
 

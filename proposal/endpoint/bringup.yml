@@ -1,0 +1,22 @@
+---
+- name: Build Caddy Docker Image
+  docker_image: 
+    name: "{{ item.name }}"
+    tag: "{{ item.tag }}"
+    source: build
+    build:
+      path: "{{ build_root }}/{{ item.dir }}"
+      pull: false
+      nocache: true
+    state: present
+    force_source: true
+  with_items:
+    - { name: caddy_j, tag: latest, dir: caddy }
+
+- name: Run caddy container
+  docker_container:
+    image: caddy_j:latest
+    name: caddyrv
+    state: started
+    command: caddy run --config /etc/caddy/Caddyfile
+    ports: "80:80"

@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: true
+
+  vars: 
+    build_root: /vagrant/endpoint
+    http_port: "80"
+    venv_path: /vagrant/venv
+
+  pre_tasks:
+    - name: Update apt cache if needed
+      apt: update_cache=yes cache_valid_time=3600
+
+  roles:
+    - role: geerlingguy.docker
+
+  tasks:
+    - import_tasks: bringup.yml

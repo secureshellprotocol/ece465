@@ -1,3 +1,4 @@
+# Required Ansible-Galaxy extensions
 ---
 roles:
   - name: geerlingguy.docker

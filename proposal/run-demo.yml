@@ -1,7 +1,0 @@
----
-# This is called directly from the Vagrantfile to set up docker on the machine
-- hosts: all
-  become: yes
-
-  roles:
-    - geerlingguy.docker
