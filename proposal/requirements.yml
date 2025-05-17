@@ -3,3 +3,6 @@
 roles:
   - name: geerlingguy.docker
     version: "7.4.7"
+collections:
+  - name: containers.podman
+    version: "1.16.3"

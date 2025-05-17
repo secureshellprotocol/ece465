@@ -15,5 +15,5 @@
 #echo "Done generating SSH Key."
 
 # install ansible requirements
-ansible-galaxy role install -r requirements.yml
+ansible-galaxy install -r requirements.yml
 echo "Done setting up ansible-galaxy dependencies"

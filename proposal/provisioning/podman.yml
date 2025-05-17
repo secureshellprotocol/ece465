@@ -1,0 +1,11 @@
+---
+- name: Build demo-app Podman Image
+  containers.podman.podman_image: 
+    name: "{{ item.name }}"
+    tag: "{{ item.tag }}"
+    build:
+      file: "{{ build_root }}/{{ item.dir }}/Dockerfile"
+      format: "docker"
+    state: build
+  with_items:
+    - { name: demo-app, tag: latest, dir: demo-app }

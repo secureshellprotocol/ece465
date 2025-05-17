@@ -1,20 +1,18 @@
 ---
 - name: Build Caddy Docker Image
-  docker_image: 
+  containers.podman.podman_image: 
     name: "{{ item.name }}"
     tag: "{{ item.tag }}"
-    source: build
     build:
-      path: "{{ build_root }}/{{ item.dir }}"
-      pull: false
-      nocache: true
-    state: present
-    force_source: true
+      file: "{{ build_root }}/{{ item.dir }}/Dockerfile"
+      format: "docker"
+    state: build
+    force: true
   with_items:
     - { name: caddy_j, tag: latest, dir: caddy }
 
 - name: Run caddy container
-  docker_container:
+  containers.podman.podman_container:
     image: caddy_j:latest
     name: caddyrv
     state: started

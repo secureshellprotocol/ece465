@@ -46,6 +46,7 @@ Pull down the repo and save it in a safe place
 $ cd ~
 $ git clone https://github.com/secureshellprotocol/ece465.git
 $ cd ece465/provisioning        # this is our PWD
+$ ./configure.sh
 ```
 
 ## Running the demo

@@ -13,3 +13,18 @@
   apt:
     name: python3-docker
     state: present
+
+- name: Install Podman
+  apt:
+    name: podman
+    state: present
+
+- name: Set up CRIU PPA
+  apt_repository:
+    repo: 'ppa:criu/ppa'
+    state: present
+
+- name: Install CRIU package
+  apt:
+    name: criu
+    state: present
