@@ -46,7 +46,8 @@ The Worker containers must run Fedora Linux.
 Vagrant must be installed, you can find the instructions
 [here.](https://developer.hashicorp.com/vagrant/install)
 
-You likely need `git, `
+Ansible should be installed as well, follow the instructions
+[here.](https://docs.ansible.com/ansible/latest/installation_guide/index.html)
 
 ## Steps to run
 
@@ -54,10 +55,12 @@ Pull down the repo and save it in a safe place
 ```
 $ cd ~
 $ git clone https://github.com/secureshellprotocol/ece465.git
-$ cd ece465/provisioning        # this is our PWD
+$ cd ece465/provisioning
 $ ./configure.sh
 $ vagrant up --provision
 ```
+
+Configuration should take around 10 minutes.
 
 Each machine should be available over ssh, eg: `vagrant ssh worker1`
 
